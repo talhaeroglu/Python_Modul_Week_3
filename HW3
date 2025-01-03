@@ -1,0 +1,82 @@
+tasks = []
+seq_no = 1
+processing = "processing"
+completed = "completed"
+deleted = "deleted"
+
+def add_task(taskname):
+    global seq_no
+    task = {"Sequence Number": seq_no, "Task Name": taskname, "Status": processing}
+    tasks.append(task)
+    print(f"Task '{taskname}' has been added. Seq number: {seq_no}, status: {processing}")
+    seq_no += 1
+
+def complete_task(seq):
+    for task in tasks:
+        if task["Sequence Number"] == seq and task["Status"] == processing:
+            task["Status"] = completed
+            print(f"Task '{task['Task Name']}' completed.")
+            return
+    print("No valid task found.")
+
+def delete_task(seq):
+    for task in tasks:
+        if task["Sequence Number"] == seq and task["Status"] == processing:
+            task["Status"] = deleted
+            print(f"Task '{task['Task Name']}' deleted.")
+            return
+    print("No valid task found or already deleted.")
+
+def completed_task():
+    print("Completed Tasks:")
+    found = False
+    for task in tasks:
+        if task["Status"] == completed:
+            print(f"Sequence: {task['Sequence Number']} - Task Name: {task['Task Name']}")
+            found = True
+    if not found:
+        print("No completed tasks found.")
+
+def all_task():
+    print("All Tasks:")
+    for task in tasks:
+        print(f"Sequence: {task['Sequence Number']} - Task Name: {task['Task Name']} - Status: {task['Status']}")
+    if not tasks:
+        print("No tasks available.")
+
+# Main loop
+while True:
+    print("\nTasks:")
+    print("1. Add Task")
+    print("2. Complete Task")
+    print("3. Delete Task")
+    print("4. List Completed Tasks")
+    print("5. List All Tasks")
+    print("6. Quit")
+
+    choice = input("Choice (1-6): ")
+
+    if choice == "1":
+        taskname = input("Enter a task name: ")
+        add_task(taskname)
+    elif choice == "2":
+        try:
+            seq = int(input("Enter the sequence number of the task to complete: "))
+            complete_task(seq)
+        except ValueError:
+            print("Please enter a valid number.")
+    elif choice == "3":
+        try:
+            seq = int(input("Enter the sequence number of the task to delete: "))
+            delete_task(seq)
+        except ValueError:
+            print("Please enter a valid number.")
+    elif choice == "4":
+        completed_task()
+    elif choice == "5":
+        all_task()
+    elif choice == "6":
+        print("Quit")
+        break
+    else:
+        print("Please select a valid option!")
